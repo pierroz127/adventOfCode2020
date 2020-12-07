@@ -16,5 +16,5 @@ func solveDay09Part2() {
 
 // ----------
 func getDay09Data() []string {
-	return []string{}
+	return getDataFromFile("day09")
 }

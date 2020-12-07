@@ -55,15 +55,6 @@ func solveDay05Part1() {
 	processBoardingPass(boardingPass)
 }
 
-func contains(arr []int, value int) bool {
-	for _, el := range arr {
-		if el == value {
-			return true
-		}
-	}
-	return false
-}
-
 func solveDay05Part2() {
 	occupiedSeats := []int{}
 	boardingPass := getDay05Data()
@@ -74,13 +65,11 @@ func solveDay05Part2() {
 
 	sort.Ints(occupiedSeats[:])
 
-	// fmt.Printf("seats: %v\n", occupiedSeats)
 	for idx := 0; idx < len(occupiedSeats)-1; idx++ {
 		prev := occupiedSeats[idx]
 		next := occupiedSeats[idx+1]
 		if next == prev+2 {
 			fmt.Printf("Your seat is probably %d\n", prev+1)
-			// return
 		}
 	}
 
@@ -88,5 +77,5 @@ func solveDay05Part2() {
 
 // ----------
 func getDay05Data() []string {
-	return getDataFromFile("inputs/day05.txt")
+	return getDataFromFile("day05")
 }

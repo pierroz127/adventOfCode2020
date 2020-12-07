@@ -595,5 +595,5 @@ func getDay06DataPart1() []string {
 }
 
 func getDay06DataPart2() []string {
-	return getDataFromFile("inputs/day06.txt")
+	return getDataFromFile("day06")
 }

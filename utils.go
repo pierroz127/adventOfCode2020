@@ -7,7 +7,7 @@ import (
 )
 
 func getDataFromFile(filename string) []string {
-	file, err := os.Open(filename)
+	file, err := os.Open(fmt.Sprintf("inputs/%s.txt", filename))
 	if err != nil {
 		fmt.Printf("can't open %s\n", filename)
 	}
@@ -20,4 +20,22 @@ func getDataFromFile(filename string) []string {
 		lines = append(lines, line)
 	}
 	return lines
+}
+
+func contains(arr []int, value int) bool {
+	for _, el := range arr {
+		if el == value {
+			return true
+		}
+	}
+	return false
+}
+
+func stringContains(arr []string, value string) bool {
+	for _, el := range arr {
+		if el == value {
+			return true
+		}
+	}
+	return false
 }
