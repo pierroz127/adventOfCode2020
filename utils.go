@@ -31,6 +31,62 @@ func contains(arr []int, value int) bool {
 	return false
 }
 
+func minInt(arr []int) (int, error) {
+	if len(arr) == 0 {
+		return 0, fmt.Errorf("Input array is empty")
+	}
+	min := arr[0]
+	for i := 1; i < len(arr); i++ {
+		if arr[i] < min {
+			min = arr[i]
+		}
+	}
+	return min, nil
+}
+
+type error interface {
+	Error() string
+}
+
+func minIntIndex(arr []int) (int, error) {
+	if len(arr) == 0 {
+		return -1, fmt.Errorf("Input array is empty")
+	}
+	minIdx := 0
+	for i := 1; i < len(arr); i++ {
+		if arr[i] < arr[minIdx] {
+			minIdx = i
+		}
+	}
+	return minIdx, nil
+}
+
+func maxInt(arr []int) (int, error) {
+	if len(arr) == 0 {
+		return 0, fmt.Errorf("Input array is empty") // By convention... we should
+	}
+	max := arr[0]
+	for i := 1; i < len(arr); i++ {
+		if arr[i] > max {
+			max = arr[i]
+		}
+	}
+	return max, nil
+}
+
+func maxIntIndex(arr []int) (int, error) {
+	if len(arr) == 0 {
+		return -1, fmt.Errorf("Input array is empty") // By convention... we should
+	}
+	max := arr[0]
+	for i := 1; i < len(arr); i++ {
+		if arr[i] > max {
+			max = arr[i]
+		}
+	}
+	return max, nil
+}
+
 func stringContains(arr []string, value string) bool {
 	for _, el := range arr {
 		if el == value {
