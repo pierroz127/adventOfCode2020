@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 )
 
 // Example ----------
@@ -45,7 +44,6 @@ func isSumOfTwo(arr []int, value int) bool {
 
 func solveDay09Part2() {
 	codes := getDay09Data()
-	// codes := []int{35, 20, 15, 25, 47, 40, 62, 55, 65, 95, 102, 117, 150, 182, 127, 219, 299, 277, 309, 576}
 	target := findFirstCodeNotSumOfTwo(codes, 25)
 	subset := findContiguousCodes(codes, target)
 
@@ -57,7 +55,6 @@ func solveDay09Part2() {
 func findContiguousCodes(codes []int, target int) []int {
 	for i := 0; i < len(codes)-1; i++ {
 		sum := codes[i]
-
 		for j := i + 1; j < len(codes); j++ {
 			sum += codes[j]
 			if sum == target {
@@ -74,11 +71,5 @@ func findContiguousCodes(codes []int, target int) []int {
 // Data ----------
 
 func getDay09Data() []int {
-	scodes := getDataFromFile("day09")
-	codes := []int{}
-	for _, s := range scodes {
-		code, _ := strconv.Atoi(s)
-		codes = append(codes, code)
-	}
-	return codes
+	return convertToIntArray(getDataFromFile("day09"))
 }

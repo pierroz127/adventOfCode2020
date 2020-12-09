@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 func getDataFromFile(filename string) []string {
@@ -20,6 +21,15 @@ func getDataFromFile(filename string) []string {
 		lines = append(lines, line)
 	}
 	return lines
+}
+
+func convertToIntArray(lines []string) []int {
+	integers := []int{}
+	for _, line := range lines {
+		i, _ := strconv.Atoi(line)
+		integers = append(integers, i)
+	}
+	return integers
 }
 
 func contains(arr []int, value int) bool {
