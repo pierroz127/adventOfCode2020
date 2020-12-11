@@ -41,6 +41,20 @@ func contains(arr []int, value int) bool {
 	return false
 }
 
+func min(i int, j int) int {
+	if i < j {
+		return i
+	}
+	return j
+}
+
+func max(i int, j int) int {
+	if i < j {
+		return j
+	}
+	return i
+}
+
 func minInt(arr []int) (int, error) {
 	if len(arr) == 0 {
 		return 0, fmt.Errorf("Input array is empty")
@@ -104,4 +118,18 @@ func stringContains(arr []string, value string) bool {
 		}
 	}
 	return false
+}
+
+func areEqual(expected []string, actual []string) bool {
+	if len(expected) != len(actual) {
+		return false
+	}
+
+	for i, s := range expected {
+		if s != actual[i] {
+			return false
+		}
+	}
+
+	return true
 }

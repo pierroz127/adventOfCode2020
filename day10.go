@@ -9,7 +9,6 @@ func solveDay10Example() {
 	// adapters := []int{16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4}
 	adapters := []int{28, 33, 18, 42, 31, 14, 46, 20, 48, 47, 24, 23, 49, 45, 19, 38, 39, 11, 1, 32, 25, 35, 8, 17, 7, 9, 4, 2, 34, 10, 3}
 	computeDifferencesDistribution(adapters)
-
 }
 
 func solveDay10Part1() {
@@ -18,11 +17,10 @@ func solveDay10Part1() {
 }
 
 func computeDifferencesDistribution(adapters []int) {
-	fmt.Printf("%d adapters\n", len(adapters))
 	adapters = append(adapters, 0)
 	sort.Ints(adapters)
 	adapters = append(adapters, adapters[len(adapters)-1]+3)
-	ones, threes := 0, 0 // final diff is 3
+	ones, threes := 0, 0
 	for i := 1; i < len(adapters); i++ {
 		if adapters[i]-adapters[i-1] == 1 {
 			ones++
@@ -37,7 +35,6 @@ func solveDay10Part2() {
 	// adapters := []int{16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4}
 	// adapters := []int{28, 33, 18, 42, 31, 14, 46, 20, 48, 47, 24, 23, 49, 45, 19, 38, 39, 11, 1, 32, 25, 35, 8, 17, 7, 9, 4, 2, 34, 10, 3}
 	adapters := getDay10Data()
-
 	adapters = append(adapters, 0)
 	sort.Ints(adapters)
 	adapters = append(adapters, adapters[len(adapters)-1]+3)
