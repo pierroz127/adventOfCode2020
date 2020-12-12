@@ -130,120 +130,50 @@ func processSeatOccupationPart2(seats []string) []string {
 }
 
 func getOccupiedSeatsAround(row int, col int, seats []string) int {
-	count := 0
-	if isLeftOccupied(row, col, seats) {
-		count++
+	around := [9]byte{}
+	for i := 0; i < 9; i++ {
+		around[i] = '.'
 	}
-	if isRightOccupied(row, col, seats) {
-		count++
-	}
-	if isUpOccupied(row, col, seats) {
-		count++
-	}
-	if isDownOccupied(row, col, seats) {
-		count++
-	}
-	if isTopLeftOccupied(row, col, seats) {
-		count++
-	}
-	if isTopRightOccupied(row, col, seats) {
-		count++
-	}
-	if isDownLeftOccupied(row, col, seats) {
-		count++
-	}
-	if isDownRightOccupied(row, col, seats) {
-		count++
-	}
-	return count
-}
-
-func isLeftOccupied(row int, col int, seats []string) bool {
-	for j := col - 1; j >= 0; j-- {
-		if seats[row][j] == '#' {
-			return true
-		} else if seats[row][j] == 'L' {
-			return false
+	occupied := 0
+	step := 1
+	possibleDirections := 8
+	for possibleDirections > 0 {
+		for i := -1; i <= 1; i++ {
+			for j := -1; j <= 1; j++ {
+				if i == 0 && j == 0 {
+					continue
+				}
+				idx := 3*(i+1) + j + 1
+				if around[idx] == '.' {
+					rowAround := row + i*step
+					if rowAround < 0 || rowAround > len(seats)-1 {
+						around[idx] = '_'
+						possibleDirections--
+						continue
+					}
+					colAround := col + j*step
+					if colAround < 0 || colAround > len(seats[row])-1 {
+						around[idx] = '_'
+						possibleDirections--
+						continue
+					}
+					if seats[rowAround][colAround] == 'L' {
+						possibleDirections--
+						around[idx] = 'L'
+						continue
+					}
+					if seats[rowAround][colAround] == '#' {
+						possibleDirections--
+						around[idx] = '#'
+						occupied++
+						continue
+					}
+				}
+			}
 		}
+		step++
 	}
-	return false
-}
-
-func isRightOccupied(row int, col int, seats []string) bool {
-	for j := col + 1; j < len(seats[row]); j++ {
-		if seats[row][j] == '#' {
-			return true
-		} else if seats[row][j] == 'L' {
-			return false
-		}
-	}
-	return false
-}
-
-func isUpOccupied(row int, col int, seats []string) bool {
-	for i := row - 1; i >= 0; i-- {
-		if seats[i][col] == '#' {
-			return true
-		} else if seats[i][col] == 'L' {
-			return false
-		}
-	}
-	return false
-}
-
-func isDownOccupied(row int, col int, seats []string) bool {
-	for i := row + 1; i < len(seats); i++ {
-		if seats[i][col] == '#' {
-			return true
-		} else if seats[i][col] == 'L' {
-			return false
-		}
-	}
-	return false
-}
-
-func isTopLeftOccupied(row int, col int, seats []string) bool {
-	for i, j := row-1, col-1; i >= 0 && j >= 0; i, j = i-1, j-1 {
-		if seats[i][j] == '#' {
-			return true
-		} else if seats[i][j] == 'L' {
-			return false
-		}
-	}
-	return false
-}
-
-func isTopRightOccupied(row int, col int, seats []string) bool {
-	for i, j := row-1, col+1; i >= 0 && j < len(seats[row]); i, j = i-1, j+1 {
-		if seats[i][j] == '#' {
-			return true
-		} else if seats[i][j] == 'L' {
-			return false
-		}
-	}
-	return false
-}
-
-func isDownLeftOccupied(row int, col int, seats []string) bool {
-	for i, j := row+1, col-1; i < len(seats) && j >= 0; i, j = i+1, j-1 {
-		if seats[i][j] == '#' {
-			return true
-		} else if seats[i][j] == 'L' {
-			return false
-		}
-	}
-	return false
-}
-
-func isDownRightOccupied(row int, col int, seats []string) bool {
-	for i, j := row+1, col+1; i < len(seats) && j < len(seats[row]); i, j = i+1, j+1 {
-		if seats[i][j] == '#' {
-			return true
-		} else if seats[i][j] == 'L' {
-			return false
-		}
-	}
-	return false
+	return occupied
 }
 
 // Data ----------
