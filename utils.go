@@ -111,6 +111,13 @@ func maxIntIndex(arr []int) (int, error) {
 	return max, nil
 }
 
+func abs(i int) int {
+	if i < 0 {
+		return -i
+	}
+	return i
+}
+
 func stringContains(arr []string, value string) bool {
 	for _, el := range arr {
 		if el == value {
