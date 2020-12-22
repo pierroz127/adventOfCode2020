@@ -36,7 +36,7 @@ func solveDay22Example() {
 		"7",
 		"10",
 	})
-	playRecursiveCardGame(player1, player2, false)
+	playRecursiveCardGame(player1, player2, 0)
 }
 
 func solveDay22Part1() {
@@ -45,10 +45,6 @@ func solveDay22Part1() {
 }
 
 func playCardGame(player1 []int, player2 []int) {
-	fmt.Printf("Player 1: %v\n", player1)
-	fmt.Printf("Player 2: %v\n", player2)
-	fmt.Println("*****")
-
 	if player1[0] > player2[0] {
 		player1 = append(player1[1:], player1[0], player2[0])
 		if len(player2) == 1 {
@@ -77,101 +73,56 @@ func computeScore(player []int) int {
 
 func solveDay22Part2() {
 	player1, player2 := getDay22Data()
-	playRecursiveCardGame(player1, player2, false)
+	playRecursiveCardGame(player1, player2, 0)
 }
 
-type Game struct {
-	player1 []int
-	player2 []int
-}
-
-func playRecursiveCardGame(deck1 []int, deck2 []int, isSubGame bool) int {
-	game := &Game{deck1, deck2}
+func playRecursiveCardGame(deck1 []int, deck2 []int, level int) int {
 	playedDecks := make(map[string]bool)
 	for true {
-		// fmt.Printf("Player 1 (length=%d): %v\n", len(game.player1), game.player1)
-		// fmt.Printf("Player 2 (length=%d): %v\n", len(game.player2), game.player2)
-		// fmt.Println("*****")
-		decksKey := getDecksKey(game.player1, game.player2)
+		decksKey := getDecksKey(deck1, deck2)
 		_, ok := playedDecks[decksKey]
 		if ok {
-			if len(playedDecks)%100 == 0 {
-				fmt.Printf("Entering a recursive loop (%d rounds already played) ! Player 1 wins (key: %s)\n", len(playedDecks), decksKey)
-			}
 			return 1
 		}
 		playedDecks[decksKey] = true
 
-		top1, top2 := game.player1[0], game.player2[0]
-		if len(game.player1)-1 >= top1 && len(game.player2)-1 >= top2 {
-			// fmt.Printf("Starting a sub game...\n")
-			subPlayer1, subPlayer2 := game.player1[1:], game.player2[1:]
-			winner := playRecursiveCardGame(subPlayer1, subPlayer2, true)
+		top1, top2 := deck1[0], deck2[0]
+		if len(deck1)-1 >= top1 && len(deck2)-1 >= top2 {
+			subDeck1 := make([]int, top1)
+			copy(subDeck1, deck1[1:1+top1])
+			subDeck2 := make([]int, top2)
+			copy(subDeck2, deck2[1:1+top2])
+			winner := playRecursiveCardGame(subDeck1, subDeck2, level+1)
 			if winner == 1 {
-				game = &Game{append(game.player1[1:], top1, top2), game.player2[1:]}
+				deck1 = append(deck1[1:], top1, top2)
+				deck2 = deck2[1:]
 			} else {
-				game = &Game{game.player1[1:], append(game.player2[1:], top2, top1)}
+				deck1 = deck1[1:]
+				deck2 = append(deck2[1:], top2, top1)
 			}
 		} else if top1 > top2 {
-			nextPlayer1 := append(game.player1[1:], top1, top2)
-			if len(game.player2) == 1 {
-				if !isSubGame {
-					fmt.Printf("Player 1 wins with score %d\n", computeScore(nextPlayer1))
+			deck1 = append(deck1[1:], top1, top2)
+			if len(deck2) == 1 {
+				if level == 0 {
+					fmt.Printf("Player 1 wins with score %d (%v)\n", computeScore(deck1), deck1)
 				}
 				return 1
 			}
-			game = &Game{nextPlayer1, game.player2[1:]}
+			deck2 = deck2[1:]
 		} else {
-			nextPlayer2 := append(game.player2[1:], top2, top1)
-			if len(game.player1) == 1 {
-				if !isSubGame {
-					fmt.Printf("Player 2 wins with score %d (%v)\n", computeScore(nextPlayer2), nextPlayer2)
+			deck2 = append(deck2[1:], top2, top1)
+			if len(deck1) == 1 {
+				if level == 0 {
+					fmt.Printf("Player 2 wins with score %d (%v)\n", computeScore(deck2), deck2)
 				}
 				return 2
 			}
-			game = &Game{game.player1[1:], nextPlayer2}
+			deck1 = deck1[1:]
 		}
 	}
 	return 0
 }
 
-// func playRecursiveCardGame(player1 []int, player2 []int, isSubGame bool) int {
-// 	decksKey := getDecksKey(player1, player2)
-// 	_, ok := playedDecks[decksKey]
-// 	if ok {
-// 		fmt.Printf("Entering a recursive loop! Player 1 wins (key: %s)\n", decksKey)
-// 		return 1
-// 	}
-// 	playedDecks[decksKey] = true
-
-// 	top1, top2 := player1[0], player2[0]
-// 	if len(player1)-1 >= top1 && len(player2)-1 >= top2 {
-// 		subPlayer1, subPlayer2 := player1[1:], player2[1:]
-// 		winner := playRecursiveCardGame(subPlayer1, subPlayer2, true)
-// 		if winner == 1 {
-// 			return playRecursiveCardGame(append(player1[1:], top1, top2), player2[1:], true)
-// 		} else {
-// 			return playRecursiveCardGame(player1[1:], append(player2[1:], top2, top1), true)
-// 		}
-// 	} else if top1 > top2 {
-// 		player1 = append(player1[1:], top1, top2)
-// 		if len(player2) == 1 {
-// 			if !isSubGame {
-// 				fmt.Printf("Player 1 wins with score %d\n", computeScore(player1))
-// 			}
-// 			return 1
-// 		}
-// 		return playRecursiveCardGame(player1, player2[1:], true)
-// 	}
-// 	player2 = append(player2[1:], top2, top1)
-// 	if len(player1) == 1 {
-// 		if !isSubGame {
-// 		fmt.Printf("Player 2 wins with score %d (%v)\n", computeScore(player2), player2)
-// 		}
-// 		return 2
-// 	}
-// 	return playRecursiveCardGame(player1[1:], player2, true)
-// }
 // ----------
 func getDay22Data() ([]int, []int) {
 	return parseCards(getDataFromFile("day22"))
