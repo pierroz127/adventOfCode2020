@@ -46,6 +46,8 @@ func main() {
 		[]func(){solveDay25Example, solveDay25Part1, solveDay25Part2},
 	}
 
+	// day = 21
+	// day = 0
 	if day > 0 && day <= len(problems) && part >= 0 && part < len(problems[day-1]) {
 		problems[day-1][part]()
 	} else {
