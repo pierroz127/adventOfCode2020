@@ -146,5 +146,4 @@ func solveDay23Part2() {
 	label2 := cup1.next.label
 	label3 := cup1.next.next.label
 	fmt.Printf("The two cups after 1 are %d and %d and they produce %d\n", label2, label3, label2*label3)
-
 }

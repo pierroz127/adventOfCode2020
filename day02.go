@@ -15,7 +15,6 @@ func checkPasswordPolicy(line string) bool {
 	max, _ := strconv.Atoi(match[2])
 	letter := match[3][0]
 	passwd := match[4]
-	//fmt.Printf("min: %d max: %d letter: %b password: %s\n", min, max, letter, passwd)
 
 	count := 0
 	for i := 0; i < len(passwd); i++ {
